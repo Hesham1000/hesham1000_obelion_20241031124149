@@ -1,104 +1,63 @@
-const { Provider, Appointment } = require('../models');
-const { Op } = require('sequelize');
+const { Sequelize } = require('sequelize');
+const path = require('path');
+const fs = require('fs');
 
-exports.searchProviders = async (req, res) => {
-  try {
-    const { specialty, location, availability } = req.query;
-    const providers = await Provider.findAll({
-      where: {
-        specialty: { [Op.like]: `%${specialty}%` },
-        location: { [Op.like]: `%${location}%` },
-        availability: { [Op.like]: `%${availability}%` }
-      }
-    });
-    res.status(200).json(providers);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while searching for providers.' });
-  }
-};
+// Database connection
+const sequelize = new Sequelize('testLoobApp', 'root', 'root', {
+  host: 'db',
+  port: 3306,
+  dialect: 'mysql'
+});
 
-exports.bookAppointment = async (req, res) => {
-  try {
-    const { providerId } = req.params;
-    const { userId, date, time } = req.body;
+// Load SQL file and execute it to ensure the table exists
+const createAppointmentsTableSQL = fs.readFileSync(path.join(__dirname, '../../database/migrations/003_create_appointments_table.sql'), 'utf8');
+sequelize.query(createAppointmentsTableSQL).catch(error => console.error('Error executing SQL:', error));
 
-    const appointment = await Appointment.create({
-      providerId,
-      userId,
-      date,
-      time,
-      status: 'pending'
-    });
-
-    res.status(201).json(appointment);
-  } catch (error) {
-    res.status(500).json({ error: 'An error occurred while booking the appointment.' });
-  }
-};
-In the models definition:
-
-// models/Provider.js
-module.exports = (sequelize, DataTypes) => {
-  const Provider = sequelize.define('Provider', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    name: DataTypes.STRING,
-    specialty: DataTypes.STRING,
-    location: DataTypes.STRING,
-    availability: DataTypes.DATE
-  }, {
-    tableName: 'providers'
-  });
-
-  Provider.associate = function(models) {
-    // associations can be defined here
-  };
-
-  return Provider;
-};
-
-// models/Appointment.js
-module.exports = (sequelize, DataTypes) => {
-  const Appointment = sequelize.define('Appointment', {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true
-    },
-    date: DataTypes.DATE,
-    time: DataTypes.TIME,
-    providerId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
-    status: {
-      type: DataTypes.STRING,
-      defaultValue: 'pending'
-    }
-  }, {
-    tableName: 'appointments'
-  });
-
-  Appointment.associate = function(models) {
-    Appointment.belongsTo(models.Provider, {
-      foreignKey: 'providerId',
-      targetKey: 'id'
-    });
-  };
-
-  return Appointment;
-};
-
-In your `config.js` or wherever the database host is specified, replace 'localhost' with 'db':
-
+// Controller functions
 module.exports = {
-  development: {
-    username: 'root',
-    password: null,
-    database: 'database_development',
-    host: 'db',
-    dialect: 'mysql'
+  getAppointments: async (req, res) => {
+    try {
+      const appointments = await sequelize.query('SELECT * FROM appointments', { type: Sequelize.QueryTypes.SELECT });
+      res.json(appointments);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to fetch appointments' });
+    }
   },
-  // other environments...
+
+  createAppointment: async (req, res) => {
+    try {
+      const { doctor, date, time } = req.body;
+      await sequelize.query('INSERT INTO appointments (doctor, date, time) VALUES (?, ?, ?)', {
+        replacements: [doctor, date, time]
+      });
+      res.status(201).json({ message: 'Appointment created successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to create appointment' });
+    }
+  },
+
+  updateAppointment: async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { doctor, date, time } = req.body;
+      await sequelize.query('UPDATE appointments SET doctor = ?, date = ?, time = ? WHERE id = ?', {
+        replacements: [doctor, date, time, id]
+      });
+      res.json({ message: 'Appointment updated successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to update appointment' });
+    }
+  },
+
+  deleteAppointment: async (req, res) => {
+    try {
+      const { id } = req.params;
+      await sequelize.query('DELETE FROM appointments WHERE id = ?', {
+        replacements: [id]
+      });
+      res.json({ message: 'Appointment deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to delete appointment' });
+    }
+  }
 };

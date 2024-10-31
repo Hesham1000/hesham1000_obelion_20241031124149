@@ -1,0 +1,136 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.header .title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.header .logo {
+  height: 40px;
+}
+
+.header .back-button {
+  font-size: 1em;
+  color: #007bff;
+  text-decoration: none;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.nav-tabs a {
+  margin: 0 15px;
+  text-decoration: none;
+  color: #333;
+  padding: 10px 20px;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-tabs a.active {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.main-content {
+  padding: 20px;
+  background-color: #fff;
+  margin: 0 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.notification {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification .info {
+  flex: 1;
+}
+
+.notification .actions {
+  display: flex;
+  align-items: center;
+}
+
+.notification .actions button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.notification .actions .confirm {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.notification .actions .cancel {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.settings-form .form-group {
+  margin-bottom: 15px;
+}
+
+.settings-form .form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.settings-form .form-group input,
+.settings-form .form-group select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.footer {
+  padding: 20px;
+  background-color: #fff;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #ddd;
+}
+
+.footer a {
+  color: #007bff;
+  text-decoration: none;
+  margin: 0 10px;
+}

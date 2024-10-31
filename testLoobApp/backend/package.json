@@ -11,18 +11,23 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "sequelize": "6.6.5",
+        "sequelize": "latest",
+        "nodemailer": "8.1.1",
+        "cors": "latest",
+        "mysql": "latest",
+        "mysql2": "latest",
         "express": "latest",
         "bcrypt": "5.0.1",
-        "jsonwebtoken": "8.5.1",
-        "nodemailer": "6.7.2"
+        "jsonwebtoken": "8.5.1"
     },
     "devDependencies": {
-        "sequelize": "6.12.3",
+        "sequelize-cli": "6.2.0",
+        "nodemailer": "latest",
+        "somesmsservice": "1.0.0",
         "bcrypt": "5.0.1",
         "express": "latest",
         "jsonwebtoken": "8.5.1",
-        "nodemailer": "8.4.0",
+        "sequelize": "6.12.3",
         "eslint": "7.32.0"
     }
 }

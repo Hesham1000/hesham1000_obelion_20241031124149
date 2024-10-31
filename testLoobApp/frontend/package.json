@@ -11,7 +11,8 @@
         "react": "latest",
         "react-dom": "latest",
         "react-router-dom": "latest",
-        "axios": "latest"
+        "axios": "latest",
+        "redux": "latest"
     },
     "devDependencies": {
         "axios": "0.21.1",

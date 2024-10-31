@@ -1,51 +1,42 @@
-const { Sequelize, DataTypes, Model } = require('sequelize');
+const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('testLoobApp', 'root', 'root', {
-  host: 'db',
+  host: 'db', // Ensure host is 'db'
   port: 3306,
-  dialect: 'mysql'
+  dialect: 'mysql',
 });
 
-class User extends Model {}
-
-User.init({
+// Define the Appointment model
+const Appointment = sequelize.define('Appointment', {
   id: {
-    type: DataTypes.INTEGER,
+    type: Sequelize.INTEGER,
     autoIncrement: true,
-    primaryKey: true
+    primaryKey: true,
   },
-  email: {
-    type: DataTypes.STRING(255),
-    unique: true
+  doctor: {
+    type: Sequelize.STRING,
+    allowNull: false,
   },
-  phone: {
-    type: DataTypes.STRING(20),
-    unique: true
+  date: {
+    type: Sequelize.DATEONLY,
+    allowNull: false,
   },
-  socialMedia: {
-    type: DataTypes.STRING(255)
+  time: {
+    type: Sequelize.TIME,
+    allowNull: false,
   },
-  password: {
-    type: DataTypes.STRING(255),
-    allowNull: false
-  }
-}, {
-  sequelize,
-  modelName: 'users', // matches the table name in database
-  timestamps: false
 });
 
-class SMSService {
-  static async sendVerificationSMS(phone, message) {
-    try {
-      // Simulated SMS sending logic
-      console.log(`Sending verification SMS to ${phone}: ${message}`);
-      return { success: true, message: 'SMS sent successfully.' };
-    } catch (error) {
-      console.error('Error sending SMS:', error);
-      return { success: false, message: 'Failed to send SMS.' };
-    }
+const sendSMS = async (to, message) => {
+  try {
+    const result = await someSMSService.send({
+      to,
+      message,
+    });
+    return result;
+  } catch (error) {
+    throw new Error('Failed to send SMS');
   }
-}
+};
 
-module.exports = { SMSService, User };
+module.exports = { sendSMS, Appointment };
