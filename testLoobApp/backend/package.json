@@ -18,11 +18,11 @@
         "nodemailer": "6.7.2"
     },
     "devDependencies": {
+        "sequelize": "6.12.3",
+        "eslint": "7.32.0",
         "bcrypt": "5.0.1",
         "express": "latest",
         "jsonwebtoken": "8.5.1",
-        "nodemailer": "8.4.0",
-        "sequelize": "6.12.3",
-        "eslint": "7.32.0"
+        "nodemailer": "8.4.0"
     }
 }

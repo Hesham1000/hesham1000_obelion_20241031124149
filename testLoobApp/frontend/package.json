@@ -14,9 +14,9 @@
         "axios": "latest"
     },
     "devDependencies": {
-        "eslint": "7.32.0",
         "axios": "0.21.1",
-        "webpack": "latest"
+        "webpack": "latest",
+        "eslint": "7.32.0"
     },
     "browserslist": {
         "production": [
